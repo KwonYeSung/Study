@@ -60,7 +60,7 @@ int main(void)
     double array_double[10];
 
 //And array's index start from "0" not 1
-    printf("Example: ");
+    printf("Array Example: ");
     for(int i = 0; array_char[i] != '\0'; i++)
         printf("%c", array_char[i]);
     printf("\n\n");
@@ -85,19 +85,34 @@ int main(void)
 
 //And then why array and pointer learn together?
 //Cause we Can use pointer for array using dynamic memory allocation
-    char_pointer = NULL;
 
     char_pointer = (char*)malloc(10 * sizeof(char));
     if(char_pointer == NULL)
         Error("Failed to Allocate Memory");
 
-    if(strncpy(char_pointer, "ARRAY", 10) == NULL)
+    if(strncpy(char_pointer, "POINTER", 10) == NULL)
         Error("Failed to Copy String");
     
     printf("array using pointer example: %s\n\n", char_pointer);
 
-    free(char_pointer); //After using memory, must be free
 
+//Each data type has pointer & it's array 
+//And then Do pointer & array have it's pointer & array?
+//it has, and we call that multi dimesion pointer & array
+
+    char** char_pointer_pointer = &char_pointer; 
+    char array_array_char[10][10];
+
+    for(int i = 0; i < 10; i++)
+        strncpy(array_array_char[i], "ARRAY", 10);
+
+    printf("multi pointer: %s\n", *char_pointer_pointer);
+    
+    for(int i = 0; i < 10; i++)
+        printf("multi array %d: %s\n", i, array_array_char[i]);
+    printf("\n");
+
+    free(char_pointer); //After using memory, must be free
 
 //Array is bunch of same data type
 //And then how we use bunch of other data type? -> struct, union

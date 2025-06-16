@@ -1,0 +1,80 @@
+#pragma once
+#include "my_link"
+
+template<typename T>
+class my_stack : virtual public my_link<T>{
+private:
+    typedef my_link<T> STACK;
+
+    STACK* top;
+
+    int count;
+
+    virtual bool isFull(){return false;}
+    virtual bool isEmpty() {return (count == -1) || (top == nullptr);}
+public:
+    void* push(T value)
+    {
+        try{
+            if(isFull())
+                throw "Stack is FULL";
+            
+        }catch(const char* msg){
+            std::clog << "[Error]: " << msg << std::endl;
+            return nullptr;
+        }
+        //First In
+        top = insert_first(top, value);
+        count++;
+
+        return top;
+    }
+
+    T pop()
+    {
+        try{
+            if(isEmpty())
+                throw "Stack is Empty";
+        }catch(const char* msg){
+            std::cerr << "[Error]: " << msg << std::endl;
+            return (T)EOF;
+        }
+        T value;
+
+        top = delete_first(top, value);
+
+        count--;
+//        if(count == -1)
+//            top = nullptr;
+
+        return value;
+    }
+
+    T peeks()
+    {
+        try{
+            if(isEmpty())
+                throw "Stack is Empty";
+            
+        }catch(const char* msg){
+            std::cerr << "[Error]: " << msg << std::endl;
+            return nullptr;
+        }
+
+        T value;
+
+        value = top->data;
+
+        return value;
+    }
+
+    my_stack() : count(-1){
+        top = new STACK;
+    }
+
+    ~my_stack(){
+        while(!(isEmpty()))
+            pop();
+        delete top;
+    }
+};

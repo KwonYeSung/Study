@@ -1,0 +1,72 @@
+#pragma once
+#include <iostream>
+template<typename T>
+class my_link{
+public:
+    my_link* link;
+    T data;
+};
+
+template<typename T>
+my_link<T>* insert_first(my_link<T>* head, T value)
+{
+    my_link<T>* new_node = new my_link<T>;
+        
+    try{    
+        if(new_node == nullptr)
+            throw "Failed to Allocate Memory";
+    
+    }catch(const char* msg){
+        std::clog << "[Error]: " << msg << std::endl;
+        return nullptr;
+    }
+
+    new_node->data = value;
+    new_node->link = head;
+    head = new_node;
+
+    return head;
+}
+
+template <typename T>
+my_link<T>* delete_first(my_link<T>* head, T& value)
+{
+    my_link<T>* removed = new my_link<T>;
+    try{
+        if(removed == nullptr)
+            throw "Failed to Allocate Memory";
+    }catch(const char* msg){
+        std::cerr << "[Error]: " << msg << std::endl;
+        return nullptr;
+    }
+    value = head->data;
+
+    removed = head;
+    head = removed->link;
+
+    delete removed;
+
+    return head;
+}
+
+template <typename T>
+my_link<T>* delete_last(my_link<T>* head, T& value)
+{
+    if(head == nullptr)
+        return nullptr;
+    if(head->link == nullptr) { // 노드가 하나뿐일 때
+        value = head->data;
+        delete head;
+        return nullptr;
+    }
+    my_link<T>* prev = head;
+    my_link<T>* curr = head->link;
+    while(curr->link != nullptr) {
+        prev = curr;
+        curr = curr->link;
+    }
+    value = curr->data;
+    delete curr;
+    prev->link = nullptr;
+    return head;
+}

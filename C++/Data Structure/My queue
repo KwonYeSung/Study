@@ -1,0 +1,64 @@
+#include "my_link"
+
+template <typename T>
+class my_queue : virtual public my_link<T>{
+private:
+    typedef my_link<T> QUEUE;
+
+    int count = 0;
+    int element = 0;
+    
+    QUEUE* front,* rear;
+
+    virtual bool isFull(){return false;}
+    virtual bool isEmpty(){return front == nullptr;}
+public:
+    my_queue(){
+        front = new QUEUE;
+        front->data = 0;
+        if(front == nullptr)
+            exit(1);
+        front->link = rear =  nullptr;
+    }
+    ~my_queue(){
+        while(!isEmpty())
+            dequeue();
+        delete front, rear;
+    }
+
+    void* enqueue(T value) {
+        if(isFull()){
+            std::cerr << "[Error]: QUEUE is FULL" << std::endl;
+            return nullptr;
+        }
+    //first node
+        if(front->link == nullptr){
+            front = insert_first(front, value);
+            rear = front->link;
+        }else{
+            front = insert_first(front, value);
+        }
+        count++;
+        element++;
+
+        return front;
+    }
+
+    T dequeue(){
+        try{
+            if(isEmpty())
+                throw "QUEUE is Empty";
+        }catch(const char* msg){
+            std::cerr << "[Error]: " << msg << std::endl;
+            return (T)EOF;
+        }
+        T value;
+        front = delete_last(front, value);
+
+        if(element == count)//delete front value
+            front = delete_last(front, value);
+        count--;
+
+        return value;
+    }
+};
